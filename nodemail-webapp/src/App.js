@@ -17,9 +17,23 @@ function handleInputChange(event){
     setCampos(campos);
 }
 
-function handleFormSubmit(event){
-  event.preventDefault();
-  console.log(campos);
+function send(){
+  const formData = new FormData();
+  Object.keys(campos).forEach(key => formData.append(key, campos[key]));
+  axios.post('http://localhost:3030/send', 
+            formData,
+            {
+              headers: {
+                "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+              }
+            })
+    .then(response => { console.log(response.data); })
+}
+
+function handleFormSubmit(event){ 
+  event.preventDefault(); 
+  console.log(campos); 
+  send(campos);
 }
 
   return (
